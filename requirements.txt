@@ -1,8 +1,9 @@
 streamlit
-tensorflow
+tensorflow-cpu==2.15.0
 numpy
 pillow
 matplotlib
 tifffile
 h5py
+
 
