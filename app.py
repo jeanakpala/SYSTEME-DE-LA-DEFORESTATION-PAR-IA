@@ -488,6 +488,22 @@ def load_deforestation_model():
     except Exception as e:
         return None, str(e)
 
+    @st.cache_resource
+    def load_deforestation_model():
+        try:
+            model = tf.keras.models.load_model(
+                MODEL_PATH,
+                compile=False
+            )
+
+            st.success(" Modèle chargé avec succès !")
+            return model
+
+        except Exception as e:
+            st.error(f" Modèle introuvable : {e}")
+            return None
+
+
 
 # =========================================================
 # HERO BANNER
