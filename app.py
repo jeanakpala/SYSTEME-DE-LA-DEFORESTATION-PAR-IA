@@ -1,13 +1,21 @@
+import os
+
+# Désactive les logs verbeux de TensorFlow avant tout import tf/keras
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+
 import streamlit as st
 import tensorflow as tf
 import numpy as np
 import tifffile as tiff
-import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from PIL import Image
 import io
 import time
+
+# Avec Keras 3, utiliser keras directement (pas tf.keras)
+import keras
 
 # =========================================================
 # PAGE CONFIG — must be first Streamlit call
@@ -406,8 +414,8 @@ def nettoyer(arr):
 # FOCAL LOSS
 # =========================================================
 
-@tf.keras.utils.register_keras_serializable(name='loss_fn')
-class FocalLoss(tf.keras.losses.Loss):
+@keras.saving.register_keras_serializable(name='loss_fn')
+class FocalLoss(keras.losses.Loss):
     def __init__(self, gamma=FOCAL_GAMMA, alpha=FOCAL_ALPHA, name='focal_loss_obj'):
         super().__init__(name=name)
         self.gamma = gamma
@@ -431,7 +439,7 @@ class FocalLoss(tf.keras.losses.Loss):
 # MÉTRIQUE F1
 # =========================================================
 
-@tf.keras.utils.register_keras_serializable()
+@keras.saving.register_keras_serializable()
 def f1_metrique(y_true, y_pred):
     y_p = tf.cast(y_pred >= 0.5, tf.float32)
     y_t = tf.cast(y_true, tf.float32)
@@ -483,25 +491,10 @@ def load_deforestation_model():
         'f1_metrique': f1_metrique
     }
     try:
-        model = tf.keras.models.load_model(MODEL_PATH, custom_objects=custom_objects)
+        model = keras.saving.load_model(MODEL_PATH, custom_objects=custom_objects)
         return model, True
     except Exception as e:
         return None, str(e)
-
-    @st.cache_resource
-    def load_deforestation_model():
-        try:
-            model = tf.keras.models.load_model(
-                MODEL_PATH,
-                compile=False
-            )
-
-            st.success(" Modèle chargé avec succès !")
-            return model
-
-        except Exception as e:
-            st.error(f" Modèle introuvable : {e}")
-            return None
 
 
 

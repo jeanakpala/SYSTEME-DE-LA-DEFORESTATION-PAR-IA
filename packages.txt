@@ -1,4 +1,9 @@
-libgdal-dev
-gdal-bin
-python3-gdal
-libtiff5-dev
+# ── Dépendances système pour opencv-python-headless ───────────────────────────
+libgl1-mesa-glx
+libglib2.0-0
+
+# ── Supprimés car inutiles pour une app Streamlit de classification d'images ──
+# libgdal-dev    → GDAL est une lib de géospatial (SIG/raster GIS), non nécessaire
+# gdal-bin       → idem
+# python3-gdal   → idem
+# libtiff5-dev   → librairie de développement TIFF, tifffile en Python suffit
