@@ -6,7 +6,7 @@ pillow
 matplotlib
 tifffile
 h5py
-
+opencv-python-headless
 
 
 

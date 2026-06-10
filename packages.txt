@@ -1,0 +1,4 @@
+libgdal-dev
+gdal-bin
+python3-gdal
+libtiff5-dev
