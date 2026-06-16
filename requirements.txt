@@ -4,4 +4,5 @@ torch
 torchvision
 numpy
 Pillow
-tensorflow-cpu
+tensorflow-cpu==2.20.0
+keras==3.13.2
