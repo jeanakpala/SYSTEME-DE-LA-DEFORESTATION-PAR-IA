@@ -1,0 +1,30 @@
+# ============================================================
+# ForestGuard Togo — Dépendances Streamlit
+# Installer avec : pip install -r requirements-streamlit.txt
+# ============================================================
+
+# Interface web
+streamlit>=1.35.0
+
+# Visualisation interactive
+plotly>=5.20.0
+
+# Cartographie
+folium>=0.16.0
+streamlit-folium>=0.20.0
+
+# Traitement d'images
+Pillow>=10.3.0
+
+# Lecture GeoTIFF (optionnel mais recommandé)
+rasterio>=1.3.0
+
+# Génération PDF
+reportlab>=4.2.0
+
+# Stack scientifique (déjà dans requirements.txt)
+numpy>=1.26.0
+pandas>=2.2.0
+
+# Deep Learning (optionnel — nécessaire en mode production)
+# tensorflow>=2.16.0

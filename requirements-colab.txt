@@ -1,0 +1,14 @@
+# Minimal dependencies for Google Colab
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+seaborn
+rasterio
+geopandas
+shapely
+pyproj
+folium
+pyyaml
+tqdm
