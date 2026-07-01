@@ -1,0 +1,249 @@
+{
+  "metadata": {
+    "projet": "ForestGuard Togo",
+    "description": "Données statistiques réelles OS3/OS4 — Réserve de Faune d'Abdoulaye & Forêt de Fazao-Malfakassa",
+    "periode": "2000-2024",
+    "resolution_m": 30,
+    "ha_par_pixel": 0.09,
+    "projection": "EPSG:32631",
+    "source": "Landsat Collection 2 Level-2 (2000-2013) & Sentinel-2 L2A (2013-2024)",
+    "note_anomalie": "Les années 2015 et 2024 (Sentinel-2) montrent une classification aberrante (0 ha forêt) due à un décalage radiométrique Landsat→Sentinel-2. Résultats fiables sur les années Landsat (2000-2013) et 2020."
+  },
+  "modele": {
+    "fichier": "best_forest_cnn_colab.keras",
+    "architecture": "CNN 4 blocs Conv2D (32/64/128/256) + GlobalAvgPool + Dense(256/64/1)",
+    "canaux": 7,
+    "noms_canaux": ["Red", "NIR", "SWIR", "NDVI", "EVI2", "NDWI", "SAVI"],
+    "taille_patch": 256,
+    "seuil_optimal": 0.1,
+    "class_weight": {"0": 0.625, "1": 1.375},
+    "entrainement": {
+      "epochs_max": 60,
+      "epochs_effectifs": 18,
+      "meilleure_epoch": 6,
+      "batch_size": 16,
+      "learning_rate_init": 0.001,
+      "duree_gpu_min": 17,
+      "gpu": "T4 (Google Colab)"
+    },
+    "metriques": {
+      "accuracy": 0.9975,
+      "precision": 1.0,
+      "recall": 0.995,
+      "f1_score": 0.9975,
+      "iou_jaccard": 0.995,
+      "auc_roc": 1.0,
+      "seuil_utilise": 0.1,
+      "nb_patches_total": 2000,
+      "nb_train": 1200,
+      "nb_val": 400,
+      "nb_test": 400
+    },
+    "mode": "production"
+  },
+  "sites": {
+    "Abdoulaye": {
+      "nom_complet": "Réserve de Faune d'Abdoulaye",
+      "region": "Région Centrale, Togo",
+      "coordonnees": {"lat": 8.65, "lon": 1.10},
+      "superficie_totale_ha": 45000,
+      "annees_disponibles": [2000, 2005, 2013, 2015, 2020, 2024],
+      "annees_valides": [2000, 2005, 2013, 2020],
+      "annees_anomalie": [2015, 2024],
+      "dimensions_px": {"largeur": 1477, "hauteur": 1851},
+      "capteur_par_annee": {
+        "2000": "Landsat",
+        "2005": "Landsat",
+        "2013": "Landsat",
+        "2015": "Sentinel-2",
+        "2020": "Sentinel-2",
+        "2024": "Sentinel-2"
+      },
+      "superficie_foret_ha": {
+        "2000": 206141.9,
+        "2005": 217814.6,
+        "2013": 243876.8,
+        "2015": null,
+        "2020": 243876.8,
+        "2024": null
+      },
+      "superficie_foret_ha_note": {
+        "2015": "Anomalie capteur — classification dégénérée (Sentinel-2 non calibré vs Landsat)",
+        "2024": "Anomalie capteur — classification dégénérée (Sentinel-2 non calibré vs Landsat)"
+      },
+      "deforesstation_ha": {
+        "2000-2005": 0.0,
+        "2005-2013": 0.0
+      },
+      "reboisement_ha": {
+        "2000-2005": 11672.7,
+        "2005-2013": 26062.2
+      },
+      "taux_annuel_pct": {
+        "2000-2005": 0.0,
+        "2005-2013": 0.0
+      },
+      "ndvi_moyen": {
+        "2000": 0.300,
+        "2005": 0.287,
+        "2013": 0.456,
+        "2015": 0.205,
+        "2020": 0.295,
+        "2024": 0.225
+      },
+      "couleur_carte": "#d62728",
+      "menace": "Indéterminée (anomalie capteur)"
+    },
+    "Fazao": {
+      "nom_complet": "Forêt de Fazao-Malfakassa",
+      "region": "Région Centrale, Togo",
+      "coordonnees": {"lat": 8.78, "lon": 1.05},
+      "superficie_totale_ha": 192000,
+      "annees_disponibles": [2013, 2015, 2020, 2024],
+      "annees_valides": [2013, 2020],
+      "annees_anomalie": [2015, 2024],
+      "dimensions_px": {"largeur": 2218, "hauteur": 3331},
+      "capteur_par_annee": {
+        "2013": "Landsat",
+        "2015": "Sentinel-2",
+        "2020": "Sentinel-2",
+        "2024": "Sentinel-2"
+      },
+      "superficie_foret_ha": {
+        "2013": 652444.9,
+        "2015": null,
+        "2020": 609797.2,
+        "2024": null
+      },
+      "superficie_foret_ha_note": {
+        "2015": "Anomalie capteur — classification dégénérée (Sentinel-2 non calibré vs Landsat)",
+        "2024": "Anomalie capteur — classification dégénérée (Sentinel-2 non calibré vs Landsat)"
+      },
+      "deforesstation_ha": {
+        "2013-2020": 42647.7
+      },
+      "reboisement_ha": {
+        "2013-2020": 0.0
+      },
+      "taux_annuel_pct": {
+        "2013-2020": 0.93
+      },
+      "ndvi_moyen": {
+        "2013": 0.543,
+        "2015": 0.231,
+        "2020": 0.337,
+        "2024": 0.249
+      },
+      "couleur_carte": "#ff7f0e",
+      "menace": "Modérée (42 647 ha perdus 2013-2020)"
+    }
+  },
+  "kpis": {
+    "superficie_initiale_ha": 858587,
+    "note_superficie_initiale": "Abdoulaye 2000 (206 141.9 ha) + Fazao 2013 (652 444.9 ha)",
+    "perte_totale_ha": 42648,
+    "note_perte_totale": "Fazao 2013→2020 (−42 647.7 ha) — seule période fiable inter-capteur homogène",
+    "superficie_valide_2020_ha": 853674,
+    "note_superficie_2020": "Abdoulaye 2020 (243 876.8 ha) + Fazao 2020 (609 797.2 ha) — dernières années valides",
+    "foret_plus_menacee": "Fazao",
+    "note_menace": "Fazao : −42 647.7 ha entre 2013 et 2020 (−6.5%, taux 0.93%/an)",
+    "taux_deforestation_moyen_pct": 0.93,
+    "anomalie_capteur": true,
+    "note_anomalie": "2015 et 2024 (Sentinel-2) : classification aberrante. Harmonisation radiométrique requise."
+  },
+  "indices_spectraux_temporels": {
+    "Abdoulaye": {
+      "2000": {"NDVI": 0.300, "EVI2": 0.161, "NDWI": -0.028, "SAVI": 0.174, "capteur": "Landsat"},
+      "2005": {"NDVI": 0.287, "EVI2": 0.150, "NDWI": -0.067, "SAVI": 0.162, "capteur": "Landsat"},
+      "2013": {"NDVI": 0.456, "EVI2": 0.245, "NDWI": -0.003, "SAVI": 0.259, "capteur": "Landsat"},
+      "2015": {"NDVI": 0.205, "EVI2": 0.151, "NDWI": -0.074, "SAVI": 0.160, "capteur": "Sentinel-2"},
+      "2020": {"NDVI": 0.295, "EVI2": 0.177, "NDWI": -0.082, "SAVI": 0.189, "capteur": "Sentinel-2"},
+      "2024": {"NDVI": 0.225, "EVI2": 0.169, "NDWI": -0.096, "SAVI": 0.177, "capteur": "Sentinel-2"}
+    },
+    "Fazao": {
+      "2013": {"NDVI": 0.543, "EVI2": 0.307, "NDWI": 0.084, "SAVI": 0.318, "capteur": "Landsat"},
+      "2015": {"NDVI": 0.231, "EVI2": 0.175, "NDWI": -0.041, "SAVI": 0.184, "capteur": "Sentinel-2"},
+      "2020": {"NDVI": 0.337, "EVI2": 0.210, "NDWI": -0.039, "SAVI": 0.222, "capteur": "Sentinel-2"},
+      "2024": {"NDVI": 0.249, "EVI2": 0.188, "NDWI": -0.058, "SAVI": 0.197, "capteur": "Sentinel-2"}
+    }
+  },
+  "livrables_generes": {
+    "shapefiles": [
+      "foret_abdoulaye_2000.shp", "foret_abdoulaye_2005.shp",
+      "foret_abdoulaye_2013.shp", "foret_abdoulaye_2020.shp",
+      "foret_fazao_2013.shp", "foret_fazao_2020.shp",
+      "forets_tous_sites_toutes_annees.geojson"
+    ],
+    "cartes_html": ["carte_deforestation_interactive.html"],
+    "rapports": ["rapport_deforestation.pdf", "rapport_deforestation.xlsx"],
+    "masques_geotiff": 20,
+    "figures": [
+      "training_curves_colab.png", "confusion_matrix_colab.png", "roc_curve_colab.png",
+      "temporal_indices.png", "index_maps_abdoulaye.png", "patch_7ch_example.png",
+      "sample_patches_by_class.png", "forest_area_timeline.png",
+      "change_maps_abdoulaye.png", "change_maps_fazao.png"
+    ],
+    "tables_csv": [
+      "test_metrics_colab.csv", "temporal_indices_stats.csv",
+      "deforestation_stats.csv", "qc_raw_inventory.csv", "qc_augmented_inventory.csv"
+    ]
+  },
+  "pipeline_phases": [
+    {
+      "id": "OS1",
+      "titre": "Collecte et Préparation des Données",
+      "description": "Acquisition de 10 images Sentinel-2/Landsat (2000-2024) pour les deux sites. QC visuel, génération de 5 000 patches augmentés (256×256 PNG). Annotation semi-automatique par seuil NDVI.",
+      "outils": ["rasterio", "geopandas", "numpy", "Jupyter"],
+      "statut": "✅ Complété",
+      "outputs": ["5 000 PNG augmentés", "labels.csv (10 sources)", "manifest.csv"]
+    },
+    {
+      "id": "OS2",
+      "titre": "Extraction des Caractéristiques Spectrales",
+      "description": "Calcul des 4 indices spectraux (NDVI, EVI2, NDWI, SAVI) sur toutes les images. Stacking en tenseurs 256×256×7 canaux float16. Analyse temporelle 2000-2024.",
+      "outils": ["numpy", "rasterio", "scikit-learn"],
+      "statut": "✅ Complété",
+      "outputs": ["2 000 patches .npy 7ch (1.7 GB)", "manifest_7ch.csv", "temporal_indices_stats.csv", "temporal_indices.png"]
+    },
+    {
+      "id": "OS3",
+      "titre": "Entraînement du Modèle CNN",
+      "description": "Architecture ForestCNN_256 : 4 blocs Conv2D + GlobalAveragePooling + Dense(256/64/1-sigmoid). 18 epochs sur GPU T4 Colab (17 min). Class weights {0:0.625, 1:1.375}. Seuil optimal : 0.1.",
+      "outils": ["TensorFlow/Keras", "Google Colab GPU T4", "scikit-learn"],
+      "statut": "✅ Entraîné (Accuracy=99.75%, AUC=1.00)",
+      "outputs": ["best_forest_cnn_colab.keras (14.5 MB)", "training_history_colab.csv", "test_metrics_colab.csv", "training_curves_colab.png", "confusion_matrix_colab.png", "roc_curve_colab.png"]
+    },
+    {
+      "id": "OS4",
+      "titre": "Inférence par Fenêtre Glissante",
+      "description": "Sliding window (patch=256, stride=128, overlap=50%) sur 10 images brutes. Reconstruction par moyenne. Détection pixel-par-pixel des changements. Anomalie détectée sur les années Sentinel-2 (2015, 2024) due à un décalage radiométrique inter-capteur.",
+      "outils": ["TensorFlow/Keras", "rasterio", "numpy", "geopandas"],
+      "statut": "✅ Exécuté (anomalie capteur Landsat/Sentinel-2 à corriger)",
+      "outputs": ["20 GeoTIFF (mask + prob)", "6 shapefiles + 1 geojson multi-sites", "deforestation_stats.csv", "forest_area_timeline.png", "change_maps_abdoulaye.png", "change_maps_fazao.png"]
+    },
+    {
+      "id": "OS5",
+      "titre": "Cartographie et Livrables Opérationnels",
+      "description": "Export GeoTIFF des masques, vectorisation en shapefiles, carte Folium interactive, rapport PDF/Excel, application Streamlit ForestGuard Togo.",
+      "outils": ["rasterio", "geopandas", "folium", "ReportLab", "Streamlit"],
+      "statut": "🔄 En cours (app Streamlit + correction anomalie capteur)",
+      "outputs": ["carte_deforestation_interactive.html", "rapport_deforestation.pdf", "rapport_deforestation.xlsx", "forestguard_app.py"]
+    }
+  ],
+  "livrables_os5": [
+    {"id": 1, "nom": "Masques binaires GeoTIFF", "format": "GeoTIFF (.tif)", "statut": "complété"},
+    {"id": 2, "nom": "Shapefiles de zones forestières", "format": "SHP + GeoJSON", "statut": "complété"},
+    {"id": 3, "nom": "Carte Folium interactive", "format": "HTML (.html)", "statut": "complété"},
+    {"id": 4, "nom": "Tableaux statistiques", "format": "CSV + XLSX", "statut": "complété"},
+    {"id": 5, "nom": "Rapport synthèse", "format": "PDF (.pdf)", "statut": "complété"},
+    {"id": 6, "nom": "Application Streamlit", "format": "Python (.py)", "statut": "en cours"},
+    {"id": 7, "nom": "Correction anomalie capteur", "format": "Harmonisation radiométrique", "statut": "planifié"}
+  ],
+  "references": [
+    "LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. Nature, 521, 436–444.",
+    "Hansen, M. C. et al. (2013). High-Resolution Global Maps of 21st-Century Forest Cover Change. Science, 342, 850–853.",
+    "Rouse, J. W. et al. (1974). Monitoring vegetation systems in the Great Plains with ERTS. NASA.",
+    "Sentinel-2 MSI User Guide. ESA (2022). sentinel.esa.int",
+    "USGS Landsat Collection 2 Data Guide. USGS (2023). earthexplorer.usgs.gov"
+  ]
+}
