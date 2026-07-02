@@ -12,3 +12,4 @@ pyproj
 folium
 pyyaml
 tqdm
+reportlab
