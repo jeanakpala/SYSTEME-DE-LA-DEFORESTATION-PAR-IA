@@ -28,3 +28,4 @@ pandas>=2.2.0
 
 # Deep Learning (optionnel — nécessaire en mode production)
 # tensorflow>=2.16.0
+reportlab>=4.2.0
